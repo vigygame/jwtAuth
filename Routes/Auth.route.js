@@ -29,7 +29,7 @@ router.post('/login',async(req,res,next)=>{
 router.post('/refresh-token',async(req,res,next)=>{
     try {
         const { refreshToken } = req.body
-        if (!refreshToken) throw createError.BadRequest()
+        if (!refreshToken) throw createHttpError.BadRequest()
         const clientID = await verifyRefreshToken(refreshToken)
   
         const accessToken = await signAccessToken(clientID)

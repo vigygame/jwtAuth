@@ -1,6 +1,7 @@
 const JWT = require('jsonwebtoken');
 const createError = require('http-errors');
 const { token } = require('morgan');
+const createHttpError = require('http-errors');
 
 module.exports={
     signAccessToken:(clientid)=>{
@@ -55,7 +56,7 @@ module.exports={
                 if(err){
                     console.log(err);
                     // reject(err)
-                    reject(createError.InternalServerError());
+                    reject(createHttpError.InternalServerError());
                 } 
                 resolve(token);
             })
@@ -64,7 +65,7 @@ module.exports={
     verifyRefreshToken:(refreshtoken)=>{
         return new Promise((resolve,reject)=>{
             JWT.verify(refreshtoken,process.env.REFRESH_TOKEN_SECRET,(err,payload)=>{
-                if(err) return reject(createError.Unauthorized())
+                if(err) return reject(createHttpError.Unauthorized())
                 const clientID=payload.aud
 
                 resolve(clientID)
